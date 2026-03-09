@@ -19,3 +19,4 @@ venv/
 tmp-acceptance-artifacts/
 tmp-ui-e2e/
 tmp-extension-acceptance.js
+docs/acceptance-report.json

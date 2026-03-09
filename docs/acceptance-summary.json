@@ -1,0 +1,50 @@
+{
+  "verifiedAt": "2026-03-09T02:53:17.216Z",
+  "browser": "Chrome/145.0.7632.160",
+  "extensionId": "lpfpmcljjcpghhaofiahicmjjdfebilb",
+  "summary": {
+    "accept-explore": {
+      "planName": "验收-发现页",
+      "passed": 4,
+      "failed": 0,
+      "flow": [
+        "打开笔记",
+        "阅读",
+        "点赞",
+        "收藏",
+        "评论"
+      ]
+    },
+    "accept-comment-zone": {
+      "planName": "验收-评论区",
+      "passed": 3,
+      "failed": 0,
+      "flow": [
+        "打开笔记",
+        "命中评论区",
+        "评论区互动"
+      ]
+    },
+    "accept-profile": {
+      "planName": "验收-主页",
+      "passed": 5,
+      "failed": 0,
+      "flow": [
+        "打开笔记",
+        "点赞",
+        "收藏",
+        "关注",
+        "评论"
+      ]
+    }
+  },
+  "artifacts": {
+    "previewGif": "docs/media/demo-preview.gif",
+    "previewMp4": "docs/media/demo-preview.mp4",
+    "screenshots": [
+      "docs/media/demo-explore.png",
+      "docs/media/demo-comment-zone.png",
+      "docs/media/demo-profile.png"
+    ]
+  }
+}
