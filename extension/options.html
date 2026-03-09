@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>养薯户 - 设置</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="logo">
+        <span class="logo-icon" aria-hidden="true"></span>
+        <div class="logo-copy">
+          <span class="logo-text">养薯户</span>
+          <span class="logo-subtitle">Task Console</span>
+        </div>
+      </div>
+      <nav>
+        <a href="#" class="nav-item active" data-tab="plans">
+          <span class="nav-icon">📝</span>
+          <span class="nav-label">养号计划</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="task">
+          <span class="nav-icon">▶️</span>
+          <span class="nav-label">执行任务</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="explore">
+          <span class="nav-icon">🔍</span>
+          <span class="nav-label">发现页养号</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="comment-zone">
+          <span class="nav-icon">💬</span>
+          <span class="nav-label">评论区养号</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="profile">
+          <span class="nav-icon">👤</span>
+          <span class="nav-label">主页养号</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="comments-lib">
+          <span class="nav-icon">📚</span>
+          <span class="nav-label">自定义评论库</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="ai-comment">
+          <span class="nav-icon">🤖</span>
+          <span class="nav-label">AI智能评论</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="schedule">
+          <span class="nav-icon">⏰</span>
+          <span class="nav-label">定时任务</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="data">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">数据统计</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="account">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">账户设置</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="plan-badge" id="sidebar-plan">免费版</div>
+        <a href="#" class="upgrade-link">升级专业版</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="content">
+
+      <!-- ============ Plans Tab ============ -->
+      <div class="tab-content active" id="tab-plans">
+        <div class="page-header">
+          <h1>养号计划</h1>
+          <p>创建和管理不同的养号方案，一次设定多次使用</p>
+        </div>
+
+        <div class="plans-hero">
+          <div class="plans-hero-copy">
+            <div class="plans-hero-eyebrow">Task Console</div>
+            <h2>计划总览</h2>
+            <p id="plans-hero-subtitle">按计划维度查看状态、最近执行结果和核心互动数据。</p>
+          </div>
+          <div class="plans-hero-stats">
+            <div class="plans-hero-stat">
+              <strong id="plans-summary-total">0</strong>
+              <span>计划总数</span>
+            </div>
+            <div class="plans-hero-stat">
+              <strong id="plans-summary-running">0</strong>
+              <span>运行中</span>
+            </div>
+            <div class="plans-hero-stat">
+              <strong id="plans-summary-browse">0</strong>
+              <span>累计浏览</span>
+            </div>
+            <div class="plans-hero-stat">
+              <strong id="plans-summary-like">0</strong>
+              <span>累计点赞</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>我的计划</h2>
+            <button id="btn-create-plan" class="btn btn-primary">+ 创建计划</button>
+          </div>
+          <div id="plans-list" class="plans-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Create/Edit Plan Modal -->
+        <div id="plan-editor-modal" class="modal-shell hidden" aria-hidden="true">
+          <div class="modal-backdrop" data-close-modal="plan-editor"></div>
+          <div id="plan-editor" class="card modal-card plan-editor-card" role="dialog" aria-modal="true" aria-labelledby="plan-editor-title">
+            <div class="modal-head">
+              <div>
+                <div class="modal-eyebrow">Plan Editor</div>
+                <h2 id="plan-editor-title">创建新计划</h2>
+              </div>
+              <button id="btn-close-plan-modal" class="modal-close-btn" type="button" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-scroll">
+              <div class="form-group">
+                <label for="plan-name">计划名称</label>
+                <input type="text" id="plan-name" placeholder="例如：美食垂类养号">
+              </div>
+              <div class="form-group">
+                <label for="plan-skill">技能类型</label>
+                <select id="plan-skill">
+                  <option value="">养号 — 浏览互动提升权重</option>
+                </select>
+              </div>
+
+              <!-- ── 养号参数（skill 为空时显示） ── -->
+              <div id="plan-nurture-fields">
+                <div class="form-group">
+                  <label for="plan-mode">养号模式</label>
+                  <select id="plan-mode">
+                    <option value="explore">发现页养号</option>
+                    <option value="comment-zone">评论区养号</option>
+                    <option value="profile">主页养号</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="plan-nurturing-phase">养号阶段</label>
+                  <select id="plan-nurturing-phase">
+                    <option value="cold-start">冷启动（新号 Day 1-7）</option>
+                    <option value="daily" selected>日常养号</option>
+                    <option value="mature">成熟期（准备发内容）</option>
+                  </select>
+                  <p class="form-hint">选择阶段后，互动概率将按策略自动调整</p>
+                </div>
+                <div class="form-group">
+                  <label for="plan-browse-count">浏览笔记数</label>
+                  <input type="number" id="plan-browse-count" value="30" min="1" max="200">
+                </div>
+                <div class="form-row">
+                  <div class="form-group half">
+                    <label for="plan-browse-interval">浏览间隔 (秒)</label>
+                    <input type="number" id="plan-browse-interval" value="5" min="2" max="30">
+                  </div>
+                  <div class="form-group half">
+                    <label for="plan-browse-duration">停留时长 (秒)</label>
+                    <input type="number" id="plan-browse-duration" value="8" min="3" max="60">
+                  </div>
+                </div>
+
+                <h3 class="section-title">互动概率</h3>
+                <div class="form-group slider-group">
+                  <label>点赞概率</label>
+                  <div class="slider-row">
+                    <input type="range" id="plan-like-prob" min="0" max="100" value="50" class="slider">
+                    <span class="slider-value" id="plan-like-prob-val">50%</span>
+                  </div>
+                </div>
+                <div class="form-group slider-group">
+                  <label>收藏概率</label>
+                  <div class="slider-row">
+                    <input type="range" id="plan-collect-prob" min="0" max="100" value="33" class="slider">
+                    <span class="slider-value" id="plan-collect-prob-val">33%</span>
+                  </div>
+                </div>
+                <div class="form-group slider-group">
+                  <label>评论概率</label>
+                  <div class="slider-row">
+                    <input type="range" id="plan-comment-prob" min="0" max="100" value="17" class="slider">
+                    <span class="slider-value" id="plan-comment-prob-val">17%</span>
+                  </div>
+                </div>
+                <div class="form-group slider-group">
+                  <label>关注概率</label>
+                  <div class="slider-row">
+                    <input type="range" id="plan-follow-prob" min="0" max="100" value="10" class="slider">
+                    <span class="slider-value" id="plan-follow-prob-val">10%</span>
+                  </div>
+                </div>
+
+                <h3 class="section-title">关键词筛选</h3>
+                <div class="form-group">
+                  <label for="plan-keywords-include">优先关键词 (逗号分隔)</label>
+                  <input type="text" id="plan-keywords-include" placeholder="美食, 旅行, 穿搭">
+                </div>
+                <div class="form-group">
+                  <label for="plan-keywords-exclude">排除关键词 (逗号分隔)</label>
+                  <input type="text" id="plan-keywords-exclude" placeholder="广告, 推广">
+                </div>
+                <div class="form-group">
+                  <label for="plan-min-likes">最低点赞门槛</label>
+                  <input type="number" id="plan-min-likes" value="0" min="0" placeholder="0 表示不限制">
+                </div>
+                <div class="form-group">
+                  <label for="plan-comment-persona">AI 评论人设 (选填)</label>
+                  <div id="plan-comment-persona-suggestions" class="persona-suggestions"></div>
+                  <input type="text" id="plan-comment-persona" placeholder="例: 美食博主、旅行达人、大学生">
+                  <p class="card-desc" id="plan-comment-persona-hint" style="margin-top:4px;font-size:12px">根据当前计划模式和评论语气生成推荐，也可以直接自定义输入。</p>
+                </div>
+                <div class="form-group">
+                  <label for="plan-comment-tone">AI 评论语气</label>
+                  <select id="plan-comment-tone">
+                    <option value="casual">日常随意</option>
+                    <option value="cute">可爱卖萌</option>
+                    <option value="professional">专业认真</option>
+                    <option value="humorous">幽默搞笑</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- ── 技能参数（从 skill-registry.js 动态渲染） ── -->
+              <div id="plan-skill-fields" style="display:none"></div>
+            </div>
+
+            <div class="btn-row modal-actions">
+              <button id="btn-save-plan" class="btn btn-primary">保存计划</button>
+              <button id="btn-cancel-plan" class="btn btn-outline" type="button">取消</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="confirm-modal" class="modal-shell hidden" aria-hidden="true">
+          <div class="modal-backdrop" data-close-modal="confirm"></div>
+          <div class="card modal-card confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
+            <div class="modal-head confirm-head">
+              <div class="confirm-head-copy">
+                <div id="confirm-eyebrow" class="modal-eyebrow">Confirm Action</div>
+                <h2 id="confirm-title">确认操作</h2>
+                <p id="confirm-message" class="confirm-message">请确认是否继续。</p>
+              </div>
+              <button id="btn-close-confirm-modal" class="modal-close-btn" type="button" aria-label="关闭">✕</button>
+            </div>
+            <div class="confirm-actions">
+              <button id="btn-cancel-confirm" class="btn btn-outline" type="button">取消</button>
+              <button id="btn-confirm-action" class="btn btn-primary" type="button">确认</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ Task Tab ============ -->
+      <div class="tab-content" id="tab-task">
+        <div class="page-header">
+          <h1>执行任务</h1>
+          <p>选择计划并启动自动养号</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>选择计划</h2>
+          </div>
+          <div class="form-group">
+            <select id="task-plan-select">
+              <option value="">-- 请先创建计划 --</option>
+            </select>
+          </div>
+          <div id="task-plan-summary" class="plan-summary" style="display:none">
+            <div class="summary-row"><span>模式</span><span id="summary-mode">-</span></div>
+            <div class="summary-row"><span>浏览数</span><span id="summary-browse">-</span></div>
+            <div class="summary-row"><span>点赞率</span><span id="summary-like">-</span></div>
+            <div class="summary-row"><span>收藏率</span><span id="summary-collect">-</span></div>
+            <div class="summary-row"><span>评论率</span><span id="summary-comment">-</span></div>
+            <div class="summary-row"><span>关注率</span><span id="summary-follow">-</span></div>
+          </div>
+          <button id="btn-start" class="btn btn-primary btn-full" style="margin-top:12px">开始养号</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>当前任务状态</h2>
+          </div>
+          <div class="status-grid">
+            <div class="status-item">
+              <span class="status-label">状态</span>
+              <span class="status-value" id="task-status">未运行</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">已浏览</span>
+              <span class="status-value" id="task-browsed">0</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">已点赞</span>
+              <span class="status-value" id="task-liked">0</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">已收藏</span>
+              <span class="status-value" id="task-collected">0</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">已评论</span>
+              <span class="status-value" id="task-commented">0</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">已关注</span>
+              <span class="status-value" id="task-followed">0</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">验证通过</span>
+              <span class="status-value" id="task-validated-pass">0</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">验证失败</span>
+              <span class="status-value" id="task-validated-fail">0</span>
+            </div>
+          </div>
+          <div class="status-footnote" id="task-validation-last-failure">最近失败: 暂无</div>
+        </div>
+
+        <div class="card">
+          <h2>今日养号进度</h2>
+          <div class="progress-section">
+            <div class="progress-item">
+              <div class="progress-label"><span>浏览</span><span id="browse-progress">0/30</span></div>
+              <div class="progress-bar"><div class="progress-fill" id="browse-progress-bar" style="width:0%"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label"><span>点赞</span><span id="like-progress">0/15</span></div>
+              <div class="progress-bar"><div class="progress-fill" id="like-progress-bar" style="width:0%"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label"><span>收藏</span><span id="collect-progress">0/10</span></div>
+              <div class="progress-bar"><div class="progress-fill" id="collect-progress-bar" style="width:0%"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label"><span>评论</span><span id="comment-progress">0/5</span></div>
+              <div class="progress-bar"><div class="progress-fill" id="comment-progress-bar" style="width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>任务日志</h2>
+          <div id="task-log" class="log-area">
+            <div class="log-empty">暂无日志，开始养号后将显示操作记录</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>验证事件</h2>
+          <div id="task-validation-events" class="validation-event-list">
+            <div class="validation-empty">启动任务后将显示验证证据</div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ============ Explore Mode Tab ============ -->
+      <div class="tab-content" id="tab-explore">
+        <div class="page-header">
+          <h1>发现页养号</h1>
+          <p>在小红书发现页自动浏览、互动，提升账号活跃度</p>
+        </div>
+        <div class="card">
+          <h2>发现页设置</h2>
+          <div class="form-group">
+            <label for="explore-browse-count">每次浏览笔记数</label>
+            <input type="number" id="explore-browse-count" value="30" min="1" max="200">
+          </div>
+          <div class="form-row">
+            <div class="form-group half">
+              <label for="explore-interval">浏览间隔 (秒)</label>
+              <input type="number" id="explore-interval" value="5" min="2" max="30">
+            </div>
+            <div class="form-group half">
+              <label for="explore-duration">停留时长 (秒)</label>
+              <input type="number" id="explore-duration" value="8" min="3" max="60">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="toggle-label">
+              <span>自动滚动发现页</span>
+              <input type="checkbox" id="explore-auto-scroll" class="toggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="card">
+          <h2>互动概率</h2>
+          <div class="form-group slider-group">
+            <label>点赞概率</label>
+            <div class="slider-row">
+              <input type="range" id="explore-like-prob" min="0" max="100" value="50" class="slider">
+              <span class="slider-value" id="explore-like-prob-val">50%</span>
+            </div>
+          </div>
+          <div class="form-group slider-group">
+            <label>收藏概率</label>
+            <div class="slider-row">
+              <input type="range" id="explore-collect-prob" min="0" max="100" value="33" class="slider">
+              <span class="slider-value" id="explore-collect-prob-val">33%</span>
+            </div>
+          </div>
+          <div class="form-group slider-group">
+            <label>评论概率</label>
+            <div class="slider-row">
+              <input type="range" id="explore-comment-prob" min="0" max="100" value="17" class="slider">
+              <span class="slider-value" id="explore-comment-prob-val">17%</span>
+            </div>
+          </div>
+          <div class="form-group slider-group">
+            <label>关注概率</label>
+            <div class="slider-row">
+              <input type="range" id="explore-follow-prob" min="0" max="100" value="10" class="slider">
+              <span class="slider-value" id="explore-follow-prob-val">10%</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>筛选条件</h2>
+          <div class="form-group">
+            <label for="explore-search-keyword">搜索关键词 (空则随机浏览)</label>
+            <input type="text" id="explore-search-keyword" placeholder="输入关键词搜索笔记">
+          </div>
+          <div class="form-group">
+            <label for="explore-min-likes">最低点赞数门槛</label>
+            <input type="number" id="explore-min-likes" value="0" min="0">
+          </div>
+          <div class="form-group">
+            <label for="explore-keywords-include">优先关键词 (逗号分隔)</label>
+            <input type="text" id="explore-keywords-include" placeholder="美食, 旅行">
+          </div>
+          <div class="form-group">
+            <label for="explore-keywords-exclude">排除关键词 (逗号分隔)</label>
+            <input type="text" id="explore-keywords-exclude" placeholder="广告, 推广">
+          </div>
+        </div>
+        <button id="btn-save-explore" class="btn btn-primary btn-full">保存发现页设置</button>
+      </div>
+
+      <!-- ============ Comment Zone Tab ============ -->
+      <div class="tab-content" id="tab-comment-zone">
+        <div class="page-header">
+          <h1>评论区养号</h1>
+          <p>在热门笔记评论区互动，点赞评论、回复，提升曝光</p>
+        </div>
+        <div class="card">
+          <h2>评论区设置</h2>
+          <div class="form-group">
+            <label for="cz-note-count">每次进入笔记数</label>
+            <input type="number" id="cz-note-count" value="10" min="1" max="50">
+          </div>
+          <div class="form-group">
+            <label for="cz-comments-per-note">每篇笔记评论区互动数</label>
+            <input type="number" id="cz-comments-per-note" value="5" min="1" max="20">
+          </div>
+          <div class="form-group slider-group">
+            <label>评论区点赞概率</label>
+            <div class="slider-row">
+              <input type="range" id="cz-like-comment-prob" min="0" max="100" value="60" class="slider">
+              <span class="slider-value" id="cz-like-comment-prob-val">60%</span>
+            </div>
+          </div>
+          <div class="form-group slider-group">
+            <label>回复评论概率</label>
+            <div class="slider-row">
+              <input type="range" id="cz-reply-prob" min="0" max="100" value="15" class="slider">
+              <span class="slider-value" id="cz-reply-prob-val">15%</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>目标笔记筛选</h2>
+          <div class="form-group">
+            <label for="cz-search-keyword">搜索关键词</label>
+            <input type="text" id="cz-search-keyword" placeholder="输入关键词找到热门笔记">
+          </div>
+          <div class="form-group">
+            <label for="cz-min-comments">最低评论数 (筛选热门)</label>
+            <input type="number" id="cz-min-comments" value="50" min="0">
+          </div>
+        </div>
+        <button id="btn-save-comment-zone" class="btn btn-primary btn-full">保存评论区设置</button>
+      </div>
+
+      <!-- ============ Profile Mode Tab ============ -->
+      <div class="tab-content" id="tab-profile">
+        <div class="page-header">
+          <h1>主页养号</h1>
+          <p>浏览指定博主主页，互动其发布的笔记</p>
+        </div>
+        <div class="card">
+          <h2>目标博主</h2>
+          <p class="card-desc">添加要访问的博主主页链接或ID</p>
+          <div id="target-profiles-list" class="comments-list"></div>
+          <div class="comment-add-row">
+            <input type="text" id="new-profile-input" placeholder="输入博主主页链接或用户ID" class="comment-input-field">
+            <button id="btn-add-profile" class="btn btn-small btn-primary">添加</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2>主页互动设置</h2>
+          <div class="form-group">
+            <label for="profile-notes-count">每个博主浏览笔记数</label>
+            <input type="number" id="profile-notes-count" value="5" min="1" max="30">
+          </div>
+          <div class="form-group slider-group">
+            <label>点赞概率</label>
+            <div class="slider-row">
+              <input type="range" id="profile-like-prob" min="0" max="100" value="70" class="slider">
+              <span class="slider-value" id="profile-like-prob-val">70%</span>
+            </div>
+          </div>
+          <div class="form-group slider-group">
+            <label>收藏概率</label>
+            <div class="slider-row">
+              <input type="range" id="profile-collect-prob" min="0" max="100" value="40" class="slider">
+              <span class="slider-value" id="profile-collect-prob-val">40%</span>
+            </div>
+          </div>
+          <div class="form-group slider-group">
+            <label>评论概率</label>
+            <div class="slider-row">
+              <input type="range" id="profile-comment-prob" min="0" max="100" value="20" class="slider">
+              <span class="slider-value" id="profile-comment-prob-val">20%</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="toggle-label">
+              <span>自动关注博主</span>
+              <input type="checkbox" id="profile-auto-follow" class="toggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <button id="btn-save-profile" class="btn btn-primary btn-full">保存主页设置</button>
+      </div>
+
+      <!-- ============ Custom Comments Library Tab ============ -->
+      <div class="tab-content" id="tab-comments-lib">
+        <div class="page-header">
+          <h1>自定义评论库</h1>
+          <p>管理评论模板，分类组织，不使用AI时随机选取</p>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h2>评论分组</h2>
+            <button id="btn-add-comment-group" class="btn btn-small btn-primary">+ 新分组</button>
+          </div>
+          <div class="form-group">
+            <select id="comment-group-select">
+              <option value="default">默认分组</option>
+            </select>
+          </div>
+        </div>
+        <div class="card">
+          <h2 id="current-group-title">默认分组</h2>
+          <p class="card-desc">在当前分组中添加评论模板</p>
+          <div id="custom-comments-list" class="comments-list"></div>
+          <div class="comment-add-row">
+            <input type="text" id="new-comment-input" placeholder="输入评论模板..." class="comment-input-field">
+            <button id="btn-add-comment" class="btn btn-small btn-primary">添加</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2>批量添加</h2>
+          <p class="card-desc">每行一条评论，快速批量导入</p>
+          <textarea id="batch-comments" class="textarea" rows="5" placeholder="好好看啊！&#10;收藏了，太实用了&#10;请问在哪里买的呀？"></textarea>
+          <button id="btn-batch-add" class="btn btn-primary" style="margin-top:8px">批量添加</button>
+        </div>
+      </div>
+
+      <!-- ============ AI Comment Tab ============ -->
+      <div class="tab-content" id="tab-ai-comment">
+        <div class="page-header">
+          <h1>AI智能评论</h1>
+          <p>AI根据笔记内容自动生成贴切评论 <span class="pro-badge">Pro</span></p>
+        </div>
+        <div class="card">
+          <div class="form-group">
+            <label class="toggle-label">
+              <span>启用AI智能评论</span>
+              <input type="checkbox" id="ai-comment-enabled" class="toggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="card">
+          <h2>评论风格</h2>
+          <p class="card-desc">选择AI生成评论的语气风格</p>
+          <div class="style-grid" id="ai-style-grid">
+            <label class="style-card active">
+              <input type="radio" name="ai-style" value="positive" checked>
+              <div class="style-icon">😊</div>
+              <div class="style-name">积极正面</div>
+              <div class="style-desc">热情友好的评论</div>
+            </label>
+            <label class="style-card">
+              <input type="radio" name="ai-style" value="curious">
+              <div class="style-icon">🤔</div>
+              <div class="style-name">好奇提问</div>
+              <div class="style-desc">带提问引发互动</div>
+            </label>
+            <label class="style-card">
+              <input type="radio" name="ai-style" value="share">
+              <div class="style-icon">💡</div>
+              <div class="style-name">分享经验</div>
+              <div class="style-desc">分享相关经历</div>
+            </label>
+            <label class="style-card">
+              <input type="radio" name="ai-style" value="random">
+              <div class="style-icon">🎲</div>
+              <div class="style-name">随机混合</div>
+              <div class="style-desc">随机选择风格</div>
+            </label>
+          </div>
+        </div>
+        <div class="card">
+          <h2>AI人设</h2>
+          <p class="card-desc">自定义AI的评论人设，让评论更贴合你的账号定位</p>
+          <div class="form-group">
+            <label for="ai-persona">人设描述</label>
+            <textarea id="ai-persona" class="textarea" rows="3" placeholder="例如：我是一个热爱美食的90后女生，经常自己做饭，喜欢探店打卡"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="ai-tone">语气偏好</label>
+            <select id="ai-tone">
+              <option value="casual">轻松口语</option>
+              <option value="cute">可爱俏皮</option>
+              <option value="professional">专业认真</option>
+              <option value="humorous">幽默风趣</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="toggle-label">
+              <span>评论中使用表情符号</span>
+              <input type="checkbox" id="ai-use-emoji" class="toggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <button id="btn-save-ai" class="btn btn-primary btn-full">保存AI设置</button>
+      </div>
+
+      <!-- ============ Schedule Tab ============ -->
+      <div class="tab-content" id="tab-schedule">
+        <div class="page-header">
+          <h1>定时任务</h1>
+          <p>设置自动执行的时间，到点自动养号 <span class="pro-badge">Pro</span></p>
+        </div>
+        <div class="card">
+          <div class="form-group">
+            <label class="toggle-label">
+              <span>启用定时任务</span>
+              <input type="checkbox" id="schedule-enabled" class="toggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="card">
+          <h2>选择计划</h2>
+          <div class="form-group">
+            <label for="schedule-plan-select">定时执行的计划</label>
+            <select id="schedule-plan-select">
+              <option value="">-- 请先创建计划 --</option>
+            </select>
+          </div>
+        </div>
+        <div class="card">
+          <h2>执行时间点</h2>
+          <p class="card-desc">添加每天自动执行的时间</p>
+          <div id="schedule-times-list" class="schedule-list"></div>
+          <div class="schedule-add-row">
+            <input type="time" id="new-schedule-time" class="time-input">
+            <button id="btn-add-time" class="btn btn-small btn-primary">添加时间</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2>重复规则</h2>
+          <p class="card-desc">选择每周哪几天执行</p>
+          <div class="weekday-selector" id="weekday-selector">
+            <label class="weekday-item"><input type="checkbox" value="1" class="weekday-cb"> <span>一</span></label>
+            <label class="weekday-item"><input type="checkbox" value="2" class="weekday-cb"> <span>二</span></label>
+            <label class="weekday-item"><input type="checkbox" value="3" class="weekday-cb"> <span>三</span></label>
+            <label class="weekday-item"><input type="checkbox" value="4" class="weekday-cb"> <span>四</span></label>
+            <label class="weekday-item"><input type="checkbox" value="5" class="weekday-cb"> <span>五</span></label>
+            <label class="weekday-item"><input type="checkbox" value="6" class="weekday-cb"> <span>六</span></label>
+            <label class="weekday-item"><input type="checkbox" value="0" class="weekday-cb"> <span>日</span></label>
+          </div>
+        </div>
+        <button id="btn-save-schedule" class="btn btn-primary btn-full">保存定时配置</button>
+      </div>
+
+      <!-- ============ Data/Stats Tab ============ -->
+      <div class="tab-content" id="tab-data">
+        <div class="page-header">
+          <h1>数据统计</h1>
+          <p>查看养号数据，洞察养号效果</p>
+        </div>
+
+        <!-- Summary Cards (2 rows: 4 + 2) -->
+        <div class="summary-cards-row">
+          <div class="summary-card">
+            <div class="summary-card-top">
+              <span class="summary-card-label">总浏览数</span>
+              <span class="summary-card-icon">👁</span>
+            </div>
+            <div class="summary-card-value" id="total-browse">0</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card-top">
+              <span class="summary-card-label">总点赞数</span>
+              <span class="summary-card-icon">♡</span>
+            </div>
+            <div class="summary-card-value" id="total-like">0</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card-top">
+              <span class="summary-card-label">总收藏数</span>
+              <span class="summary-card-icon">☆</span>
+            </div>
+            <div class="summary-card-value" id="total-collect">0</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card-top">
+              <span class="summary-card-label">总关注数</span>
+              <span class="summary-card-icon">👤</span>
+            </div>
+            <div class="summary-card-value" id="total-follow">0</div>
+          </div>
+        </div>
+        <div class="summary-cards-row half-row">
+          <div class="summary-card">
+            <div class="summary-card-top">
+              <span class="summary-card-label">总评论数</span>
+              <span class="summary-card-icon">💬</span>
+            </div>
+            <div class="summary-card-value" id="total-comment">0</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card-top">
+              <span class="summary-card-label">养号总时长</span>
+              <span class="summary-card-icon">⏱</span>
+            </div>
+            <div class="summary-card-value" id="total-duration">0 分 0 秒</div>
+          </div>
+        </div>
+
+        <!-- Toolbar: Search / Sort / Filter / Clear -->
+        <div class="data-toolbar">
+          <div class="toolbar-search">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="log-search" placeholder="搜索...">
+          </div>
+          <div class="toolbar-actions">
+            <div class="toolbar-sort">
+              <span class="sort-icon">↕</span>
+              <select id="log-sort">
+                <option value="time-desc">时间 (最新)</option>
+                <option value="time-asc">时间 (最早)</option>
+                <option value="name">名称</option>
+                <option value="duration">时长</option>
+              </select>
+            </div>
+            <button class="btn btn-outline btn-small" id="btn-filter-logs">🔽 筛选</button>
+            <button class="btn btn-outline btn-small btn-danger-text" id="btn-clear-logs">🗑 清除日志</button>
+          </div>
+        </div>
+
+        <!-- Task Execution Log Table -->
+        <div class="table-container data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="col-check"><input type="checkbox" id="log-check-all"></th>
+                <th>计划名称</th>
+                <th>开始时间</th>
+                <th>时长</th>
+                <th>浏览</th>
+                <th>点赞</th>
+                <th>收藏</th>
+                <th>关注</th>
+                <th>评论</th>
+                <th>状态</th>
+                <th class="col-action"></th>
+              </tr>
+            </thead>
+            <tbody id="task-log-body">
+              <tr><td colspan="11" class="empty-row">暂无执行记录</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ============ Account Tab ============ -->
+      <div class="tab-content" id="tab-account">
+        <div class="page-header">
+          <h1>账户设置</h1>
+          <p>管理你的账户和订阅</p>
+        </div>
+        <div class="card">
+          <h2>当前套餐</h2>
+          <div class="plan-info">
+            <div class="plan-name" id="account-plan">免费版</div>
+            <div class="plan-desc">基础养号功能</div>
+            <a href="#" class="btn btn-primary">升级到专业版 $12/月</a>
+          </div>
+        </div>
+        <div class="card">
+          <h2>账户信息</h2>
+          <div class="form-group">
+            <label for="user-email">邮箱</label>
+            <input type="email" id="user-email" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label for="api-key">API Key</label>
+            <div class="input-group">
+              <input type="password" id="api-key" placeholder="输入你的API Key">
+              <button class="btn btn-small" id="btn-toggle-key">显示</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="api-base-url">API 地址 (可选)</label>
+            <input type="text" id="api-base-url" placeholder="https://api.yangshuhu.com">
+          </div>
+          <button class="btn btn-primary" id="btn-save-account">保存</button>
+        </div>
+        <div class="card">
+          <h2>OpenClaw AI 连接</h2>
+          <p class="card-desc">连接 OpenClaw 后启用 AI 智能养号模式，替代传统选择器自动化。</p>
+          <div class="openclaw-status" id="openclaw-status">
+            <span class="status-dot" id="openclaw-dot"></span>
+            <span id="openclaw-mode-text">未检测</span>
+          </div>
+          <div class="form-group">
+            <label for="openclaw-url">Gateway URL</label>
+            <input type="text" id="openclaw-url" placeholder="ws://127.0.0.1:18789" value="ws://127.0.0.1:18789">
+          </div>
+          <div class="form-group">
+            <label for="openclaw-token">Token <span id="token-auto-status" style="font-size:12px;font-weight:normal;margin-left:8px"></span></label>
+            <input type="password" id="openclaw-token" placeholder="自动获取或手动填写">
+            <p class="card-desc" style="margin-top:4px;font-size:12px">安装 Native Bridge 后自动获取，或手动从 ~/.openclaw/openclaw.json 复制</p>
+          </div>
+          <div class="form-group">
+            <label for="cdp-url">浏览器调试端口 (实时画面)</label>
+            <input type="text" id="cdp-url" placeholder="127.0.0.1:18800" value="127.0.0.1:18800">
+            <p class="card-desc" style="margin-top:4px;font-size:12px">OpenClaw 控制的浏览器 CDP 端口，用于实时操作画面</p>
+          </div>
+          <div class="action-group">
+            <button class="btn btn-primary" id="btn-test-openclaw">测试连接</button>
+            <button class="btn btn-outline" id="btn-save-openclaw">保存配置</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2>数据管理</h2>
+          <div class="action-group">
+            <button class="btn btn-outline" id="btn-export">导出数据</button>
+            <button class="btn btn-danger" id="btn-clear">清除所有数据</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Right Panel: Live Operation View -->
+    <aside id="live-panel" class="live-panel">
+      <div class="live-panel-header">
+        <div class="live-panel-title">
+          <span class="live-dot"></span>
+          <span>实时操作视图</span>
+        </div>
+        <div class="live-panel-actions">
+          <button id="btn-open-xhs" class="btn btn-small btn-outline" title="在新标签页打开小红书">打开小红书</button>
+          <button id="btn-collapse-panel" class="btn btn-small btn-icon" title="收起面板">✕</button>
+        </div>
+      </div>
+      <div class="browser-chrome">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </div>
+          <div class="browser-url" id="browser-url">
+            <span class="url-icon">🔒</span>
+            <span class="url-text">https://www.xiaohongshu.com/explore</span>
+          </div>
+          <div class="browser-actions">
+            <button id="btn-refresh-tab" class="browser-btn" title="刷新">↻</button>
+          </div>
+        </div>
+        <div class="browser-viewport" id="browser-viewport">
+          <div class="browser-placeholder" id="browser-placeholder">
+            <div class="placeholder-icon">🌱</div>
+            <div class="placeholder-title">等待任务启动</div>
+            <div class="placeholder-desc">点击「开始养号」后，将在此显示实时操作</div>
+          </div>
+          <div class="browser-active" id="browser-active" style="display:none">
+            <div class="active-current-action" id="current-action">
+              <div class="action-icon" id="action-icon">👀</div>
+              <div class="action-info">
+                <div class="action-label" id="action-label">正在浏览</div>
+                <div class="action-detail" id="action-detail">准备开始...</div>
+              </div>
+            </div>
+            <div class="screenshot-viewport" id="screenshot-viewport">
+              <img id="screenshot-img" src="" alt="实时画面">
+              <div class="screencast-badge hidden" id="screencast-badge">LIVE</div>
+              <div class="screenshot-loading" id="screenshot-loading">
+                <div class="screenshot-spinner"></div>
+                <span id="screenshot-loading-text">正在连接实时画面...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="operation-chain">
+        <div class="chain-header">
+          <h3>操作链</h3>
+          <span class="chain-count" id="chain-count">0 步</span>
+        </div>
+        <div class="chain-list" id="chain-list">
+          <div class="chain-empty">启动任务后将显示操作步骤</div>
+        </div>
+      </div>
+      <div class="live-stats-bar">
+        <div class="live-stat"><span class="live-stat-icon">👀</span><span class="live-stat-val" id="live-browsed">0</span></div>
+        <div class="live-stat"><span class="live-stat-icon">❤️</span><span class="live-stat-val" id="live-liked">0</span></div>
+        <div class="live-stat"><span class="live-stat-icon">⭐</span><span class="live-stat-val" id="live-collected">0</span></div>
+        <div class="live-stat"><span class="live-stat-icon">💬</span><span class="live-stat-val" id="live-commented">0</span></div>
+        <div class="live-stat"><span class="live-stat-icon">➕</span><span class="live-stat-val" id="live-followed">0</span></div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="openclaw-bridge.js"></script>
+  <script src="cdp-screencast.js"></script>
+  <script src="api.js"></script>
+  <script src="skill-registry.js"></script>
+  <script src="recommendation-service.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

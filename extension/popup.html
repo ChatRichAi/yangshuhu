@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>养薯户</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f3f1ed;
+      --panel: rgba(255, 255, 255, 0.82);
+      --panel-strong: #ffffff;
+      --line: rgba(27, 31, 35, 0.08);
+      --text: #18212b;
+      --muted: #70808f;
+      --primary: #ec5b4f;
+      --primary-deep: #c9423d;
+      --primary-soft: rgba(236, 91, 79, 0.12);
+      --success: #178f5f;
+      --success-soft: rgba(23, 143, 95, 0.12);
+      --warn: #b36a1f;
+      --warn-soft: rgba(179, 106, 31, 0.12);
+      --danger: #c53a3a;
+      --danger-soft: rgba(197, 58, 58, 0.12);
+      --shadow: 0 18px 50px rgba(57, 44, 31, 0.10);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 12px;
+    }
+
+    body {
+      width: 420px;
+      min-height: 620px;
+      font-family: "SF Pro Display", "PingFang SC", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(236, 91, 79, 0.16), transparent 38%),
+        radial-gradient(circle at top right, rgba(255, 210, 160, 0.45), transparent 32%),
+        linear-gradient(180deg, #f8f6f2 0%, #f2efea 100%);
+    }
+
+    .shell {
+      padding: 18px 16px 16px;
+    }
+
+    .hero {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 247, 243, 0.82));
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -20px;
+      top: -28px;
+      width: 120px;
+      height: 120px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(236, 91, 79, 0.18), rgba(236, 91, 79, 0));
+      pointer-events: none;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: block;
+      background: center / cover no-repeat url("icons/icon48.png");
+      box-shadow: 0 8px 16px rgba(193, 78, 63, 0.16);
+    }
+
+    .brand-copy {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .title {
+      font-size: 25px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 7px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+      max-width: 250px;
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(24, 33, 43, 0.08);
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 14px;
+      color: var(--text);
+      font-size: 19px;
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-1px);
+      background: #fff;
+      border-color: rgba(24, 33, 43, 0.14);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .hero-stat {
+      background: rgba(255, 255, 255, 0.62);
+      border: 1px solid rgba(24, 33, 43, 0.06);
+      border-radius: 16px;
+      padding: 11px 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 20px;
+      line-height: 1.1;
+      margin-bottom: 4px;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-stat span {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .toolbar {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.8);
+      box-shadow: 0 12px 28px rgba(57, 44, 31, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      margin-bottom: 12px;
+      backdrop-filter: blur(14px);
+    }
+
+    .search {
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .search input,
+    .toolbar select {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.78);
+      border-radius: 14px;
+      outline: none;
+      color: var(--text);
+      transition: border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .search input {
+      padding: 12px 14px 12px 40px;
+      font-size: 14px;
+    }
+
+    .search input:focus,
+    .toolbar select:focus {
+      border-color: rgba(236, 91, 79, 0.45);
+      background: #fff;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .toolbar-row {
+      display: grid;
+      grid-template-columns: 1fr 118px;
+      gap: 10px;
+    }
+
+    .toolbar select {
+      padding: 11px 12px;
+      font-size: 13px;
+      appearance: none;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2px 2px 10px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .section-meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 430px;
+      overflow-y: auto;
+      padding-right: 2px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .task-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .task-card {
+      background: var(--panel-strong);
+      border: 1px solid rgba(24, 33, 43, 0.07);
+      border-radius: 20px;
+      padding: 14px;
+      box-shadow: 0 10px 24px rgba(57, 44, 31, 0.08);
+    }
+
+    .task-card.running {
+      border-color: rgba(23, 143, 95, 0.25);
+      box-shadow: 0 14px 30px rgba(23, 143, 95, 0.12);
+    }
+
+    .task-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .task-title-wrap {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-mode {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #f6f2ec;
+      color: #5f6771;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .task-name {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .task-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .task-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .task-status::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .task-status.running {
+      color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .task-status.idle {
+      color: #6e7882;
+      background: rgba(110, 120, 130, 0.12);
+    }
+
+    .task-status.stopped {
+      color: var(--warn);
+      background: var(--warn-soft);
+    }
+
+    .task-status.error {
+      color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .task-data {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .pill {
+      background: #f7f7f6;
+      border-radius: 14px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .pill strong {
+      display: block;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .pill span {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .task-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .task-last {
+      font-size: 12px;
+      color: var(--muted);
+      min-width: 0;
+      line-height: 1.45;
+    }
+
+    .task-last strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .task-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      transition: transform 0.18s ease, filter 0.18s ease, background 0.18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      padding: 11px 14px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-deep));
+      box-shadow: 0 10px 18px rgba(236, 91, 79, 0.24);
+    }
+
+    .btn-danger {
+      padding: 11px 14px;
+      color: #fff;
+      background: linear-gradient(135deg, #e95656, #bf3f47);
+      box-shadow: 0 10px 18px rgba(201, 63, 71, 0.22);
+    }
+
+    .btn-ghost {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      background: #faf9f7;
+      color: var(--text);
+    }
+
+    .empty-state {
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px dashed rgba(24, 33, 43, 0.14);
+      border-radius: 20px;
+      padding: 24px 20px;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .empty-state strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 12px;
+      opacity: 0.9;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="hero-top">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-copy">
+          <div class="eyebrow">Task Console</div>
+          <div class="title">红薯养号器</div>
+          <div class="subtitle" id="hero-subtitle">正在整理当前计划和最近执行数据。</div>
+        </div>
+        <button class="icon-btn" id="btn-settings" title="打开设置">⌂</button>
+      </div>
+      <div class="hero-grid">
+        <div class="hero-stat">
+          <strong id="summary-plans">0</strong>
+          <span>计划总数</span>
+        </div>
+        <div class="hero-stat">
+          <strong id="summary-running">0</strong>
+          <span>运行中</span>
+        </div>
+        <div class="hero-stat">
+          <strong id="summary-browse">0</strong>
+          <span>今日浏览</span>
+        </div>
+        <div class="hero-stat">
+          <strong id="summary-like">0</strong>
+          <span>今日点赞</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <div class="search">
+        <span class="search-icon">⌕</span>
+        <input type="search" id="search-input" placeholder="搜索计划名称、模式或状态">
+      </div>
+      <div class="toolbar-row">
+        <select id="filter-select">
+          <option value="all">所有计划</option>
+          <option value="running">运行中</option>
+          <option value="idle">待启动</option>
+          <option value="error">异常/失败</option>
+        </select>
+        <select id="sort-select">
+          <option value="recent">最新优先</option>
+          <option value="name">按名称</option>
+          <option value="mode">按模式</option>
+        </select>
+      </div>
+    </section>
+
+    <div class="section-head">
+      <div class="section-title">任务列表</div>
+      <div class="section-meta" id="list-meta">0 个计划</div>
+    </div>
+
+    <div class="task-list" id="task-list"></div>
+    <div class="footer-note">养薯户 v3.0.1</div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
