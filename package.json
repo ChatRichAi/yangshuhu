@@ -1,0 +1,7 @@
+{
+  "name": "yangshuhu",
+  "private": true,
+  "scripts": {
+    "e2e:xhs": "node scripts/e2e-xhs.js"
+  }
+}
